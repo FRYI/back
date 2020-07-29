@@ -116,9 +116,9 @@
             }
           },
           {
-            title:'order',
+            title:'ordernumber',
             align:"center",
-            dataIndex: 'order'
+            dataIndex: 'ordernumber'
           },
           {
             title:'supplier',
@@ -149,7 +149,7 @@
           {
             title:'inspection Date',
             align:"center",
-            dataIndex: 'inspection Date',
+            dataIndex: 'inspectionDate',
             customRender:function (text) {
               return !text?"":(text.length>10?text.substr(0,10):text)
             }

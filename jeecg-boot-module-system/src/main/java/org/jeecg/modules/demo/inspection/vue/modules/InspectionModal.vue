@@ -11,8 +11,8 @@
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
 
-        <a-form-item label="order" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="['order']" placeholder="请输入order"></a-input>
+        <a-form-item label="ordernumber" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input v-decorator="['ordernumber']" placeholder="请输入ordernumber"></a-input>
         </a-form-item>
         <a-form-item label="supplier" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-input v-decorator="['supplier']" placeholder="请输入supplier"></a-input>
@@ -27,19 +27,13 @@
           <j-date placeholder="请选择comfirmDate" v-decorator="['comfirmDate']" :trigger-change="true" style="width: 100%"/>
         </a-form-item>
         <a-form-item label="inspection Date" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <j-date placeholder="请选择inspection Date" v-decorator="['inspection Date']" :trigger-change="true" style="width: 100%"/>
+          <j-date placeholder="请选择inspection Date" v-decorator="['inspectionDate']" :trigger-change="true" style="width: 100%"/>
         </a-form-item>
         <a-form-item label="deliveryDate" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <j-date placeholder="请选择deliveryDate" v-decorator="['deliveryDate']" :trigger-change="true" style="width: 100%"/>
         </a-form-item>
         <a-form-item label="amount" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-input v-decorator="['amount']" placeholder="请输入amount"></a-input>
-        </a-form-item>
-        <a-form-item label="createTime" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <j-date placeholder="请选择createTime" v-decorator="['createTime']" :trigger-change="true" style="width: 100%"/>
-        </a-form-item>
-        <a-form-item label="updateTime" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <j-date placeholder="请选择updateTime" v-decorator="['updateTime']" :trigger-change="true" style="width: 100%"/>
         </a-form-item>
 
       </a-form>
@@ -95,7 +89,7 @@
         this.model = Object.assign({}, record);
         this.visible = true;
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model,'order','supplier','inspector','depositeDate','comfirmDate','inspection Date','deliveryDate','amount','createTime','updateTime'))
+          this.form.setFieldsValue(pick(this.model,'ordernumber','supplier','inspector','depositeDate','comfirmDate','inspectionDate','deliveryDate','amount','createTime','updateTime'))
         })
       },
       close () {
@@ -138,7 +132,7 @@
         this.close()
       },
       popupCallback(row){
-        this.form.setFieldsValue(pick(row,'order','supplier','inspector','depositeDate','comfirmDate','inspection Date','deliveryDate','amount','createTime','updateTime'))
+        this.form.setFieldsValue(pick(row,'ordernumber','supplier','inspector','depositeDate','comfirmDate','inspectionDate','deliveryDate','amount','createTime','updateTime'))
       },
 
       

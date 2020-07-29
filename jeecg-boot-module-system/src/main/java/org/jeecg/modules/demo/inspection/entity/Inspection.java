@@ -20,7 +20,7 @@ import lombok.experimental.Accessors;
 /**
  * @Description: inspection
  * @Author: jeecg-boot
- * @Date:   2020-07-17
+ * @Date:   2020-07-29
  * @Version: V1.0
  */
 @Data
@@ -35,10 +35,10 @@ public class Inspection implements Serializable {
 	@TableId(type = IdType.ID_WORKER_STR)
     @ApiModelProperty(value = "id")
     private String id;
-	/**order*/
-	@Excel(name = "order", width = 15)
-    @ApiModelProperty(value = "order")
-    private String order;
+	/**ordernumber*/
+	@Excel(name = "ordernumber", width = 15)
+    @ApiModelProperty(value = "ordernumber")
+    private String ordernumber;
 	/**supplier*/
 	@Excel(name = "supplier", width = 15)
     @ApiModelProperty(value = "supplier")
@@ -60,7 +60,7 @@ public class Inspection implements Serializable {
     @ApiModelProperty(value = "comfirmDate")
     private Date comfirmDate;
 	/**inspection Date*/
-	@Excel(name = "inspectionDate", width = 15, format = "yyyy-MM-dd")
+	@Excel(name = "inspection Date", width = 15, format = "yyyy-MM-dd")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "inspection Date")

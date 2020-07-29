@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 /**
  * @Description: inspection
  * @Author: jeecg-boot
- * @Date:   2020-07-17
+ * @Date:   2020-07-29
  * @Version: V1.0
  */
 public interface InspectionMapper extends BaseMapper<Inspection> {
