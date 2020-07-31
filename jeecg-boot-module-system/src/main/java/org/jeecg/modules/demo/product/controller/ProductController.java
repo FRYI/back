@@ -71,7 +71,7 @@ public class ProductController extends JeecgController<Product, IProductService>
 		IPage<Product> pageList = productService.page(page, queryWrapper);
 		return Result.ok(pageList);
 	}
-	
+
 	/**
 	 *   添加
 	 *
@@ -85,6 +85,10 @@ public class ProductController extends JeecgController<Product, IProductService>
 		productService.save(product);
 		return Result.ok("添加成功！");
 	}
+
+
+
+
 	
 	/**
 	 *  编辑
@@ -96,6 +100,7 @@ public class ProductController extends JeecgController<Product, IProductService>
 	@ApiOperation(value="product-编辑", notes="product-编辑")
 	@PutMapping(value = "/edit")
 	public Result<?> edit(@RequestBody Product product) {
+		System.out.println(product.getPhoto());
 		productService.updateById(product);
 		return Result.ok("编辑成功!");
 	}
