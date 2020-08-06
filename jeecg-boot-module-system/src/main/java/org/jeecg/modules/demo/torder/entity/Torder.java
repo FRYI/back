@@ -36,105 +36,109 @@ public class Torder implements Serializable {
     @ApiModelProperty(value = "id")
     private String id;
 	/**ordernumber*/
-	@Excel(name = "ordernumber", width = 15)
+	@Excel(name = "OrderNumber", width = 15)
     @ApiModelProperty(value = "ordernumber")
     private String ordernumber;
 	/**supplier*/
-	@Excel(name = "supplier", width = 15)
+	@Excel(name = "Supplier", width = 15)
     @ApiModelProperty(value = "supplier")
     private String supplier;
 	/**client*/
-	@Excel(name = "client", width = 15)
+	@Excel(name = "Client", width = 15)
     @ApiModelProperty(value = "client")
     private String client;
 	/**chop*/
-	@Excel(name = "chop", width = 15)
+	@Excel(name = "Chop", width = 15)
     @ApiModelProperty(value = "chop")
     private String chop;
+    /**season*/
+    @Excel(name = "Season", width = 15)
+    @ApiModelProperty(value = "season")
+    private java.lang.String season;
 	/**product*/
-	@Excel(name = "product", width = 15)
+	@Excel(name = "Product", width = 15)
     @ApiModelProperty(value = "product")
     private String product;
 	/**incoterm*/
-	@Excel(name = "incoterm", width = 15)
+	@Excel(name = "Incoterm", width = 15)
     @ApiModelProperty(value = "incoterm")
     private String incoterm;
 	/**delivery*/
-	@Excel(name = "delivery", width = 15)
+	@Excel(name = "Delivery", width = 15)
     @ApiModelProperty(value = "delivery")
     private String delivery;
 	/**price*/
-	@Excel(name = "price", width = 15)
-    @ApiModelProperty(value = "price")
-    private String price;
+	@Excel(name = "Price Usd", width = 15)
+    @ApiModelProperty(value = "priceUsd")
+    private String priceUsd;
 	/**quantity*/
-	@Excel(name = "quantity", width = 15)
+	@Excel(name = "Quantity", width = 15)
     @ApiModelProperty(value = "quantity")
     private String quantity;
 	/**amountRmb*/
-	@Excel(name = "amountRmb", width = 15)
+	@Excel(name = "Amount Rmb", width = 15)
     @ApiModelProperty(value = "amountRmb")
     private String amountRmb;
 	/**amountUsd*/
-	@Excel(name = "amountUsd", width = 15)
+	@Excel(name = "Amount Usd", width = 15)
     @ApiModelProperty(value = "amountUsd")
     private String amountUsd;
 	/**depositRmb*/
-	@Excel(name = "depositRmb", width = 15)
+	@Excel(name = "Deposit Rmb", width = 15)
     @ApiModelProperty(value = "depositRmb")
     private String depositRmb;
 	/**depositUsd*/
-	@Excel(name = "depositUsd", width = 15)
+	@Excel(name = "Deposit Usd", width = 15)
     @ApiModelProperty(value = "depositUsd")
     private String depositUsd;
 	/**depositPay*/
-	@Excel(name = "depositPay", width = 15)
+	@Excel(name = "Deposit Pay", width = 15)
     @ApiModelProperty(value = "depositPay")
     private String depositPay;
 	/**balanceRmb*/
-	@Excel(name = "balanceRmb", width = 15)
+	@Excel(name = "Balance Rmb", width = 15)
     @ApiModelProperty(value = "balanceRmb")
     private String balanceRmb;
 	/**balanceUsd*/
-	@Excel(name = "balanceUsd", width = 15)
+	@Excel(name = "Balance Usd", width = 15)
     @ApiModelProperty(value = "balanceUsd")
     private String balanceUsd;
 	/**balancePay*/
-	@Excel(name = "balancePay", width = 15)
+	@Excel(name = "Balance Pay", width = 15)
     @ApiModelProperty(value = "balancePay")
     private String balancePay;
 	/**deliveryDate*/
-	@Excel(name = "deliveryDate", width = 15, format = "yyyy-MM-dd")
+	@Excel(name = "Delivery Date", width = 15, format = "yyyy-MM-dd")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "deliveryDate")
     private Date deliveryDate;
 	/**deliverySituation*/
-	@Excel(name = "deliverySituation", width = 15)
+	@Excel(name = "Delivery Situation", width = 15)
     @ApiModelProperty(value = "deliverySituation")
     private String deliverySituation;
 	/**etd*/
-	@Excel(name = "etd", width = 15, format = "yyyy-MM-dd")
+	@Excel(name = "Etd", width = 15, format = "yyyy-MM-dd")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "etd")
     private Date etd;
 	/**delay*/
-	@Excel(name = "delay", width = 15)
+	@Excel(name = "Delay", width = 15)
     @ApiModelProperty(value = "delay")
     private String delay;
 	/**eta*/
-	@Excel(name = "eta", width = 15, format = "yyyy-MM-dd")
+	@Excel(name = "Eta", width = 15, format = "yyyy-MM-dd")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "eta")
     private Date eta;
 	/**status*/
-	@Excel(name = "status", width = 15)
+	@Excel(name = "Status", width = 15)
     @ApiModelProperty(value = "status")
     private String status;
 	/**statusdate*/
-	@Excel(name = "statusdate", width = 15, format = "yyyy-MM-dd")
+	@Excel(name = "Status Date", width = 15, format = "yyyy-MM-dd")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "statusdate")

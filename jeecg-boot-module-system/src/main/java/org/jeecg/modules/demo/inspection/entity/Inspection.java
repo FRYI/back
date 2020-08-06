@@ -36,43 +36,43 @@ public class Inspection implements Serializable {
     @ApiModelProperty(value = "id")
     private String id;
 	/**ordernumber*/
-	@Excel(name = "ordernumber", width = 15)
+	@Excel(name = "OrderNumber", width = 15)
     @ApiModelProperty(value = "ordernumber")
     private String ordernumber;
 	/**supplier*/
-	@Excel(name = "supplier", width = 15)
+	@Excel(name = "Supplier", width = 15)
     @ApiModelProperty(value = "supplier")
     private String supplier;
 	/**inspector*/
-	@Excel(name = "inspector", width = 15)
+	@Excel(name = "Inspector", width = 15)
     @ApiModelProperty(value = "inspector")
     private String inspector;
 	/**depositeDate*/
-	@Excel(name = "depositeDate", width = 15, format = "yyyy-MM-dd")
+	@Excel(name = "Deposite Date", width = 15, format = "yyyy-MM-dd")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "depositeDate")
     private Date depositeDate;
 	/**comfirmDate*/
-	@Excel(name = "comfirmDate", width = 15, format = "yyyy-MM-dd")
+	@Excel(name = "Comfirm Date", width = 15, format = "yyyy-MM-dd")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "comfirmDate")
     private Date comfirmDate;
 	/**inspection Date*/
-	@Excel(name = "inspection Date", width = 15, format = "yyyy-MM-dd")
+	@Excel(name = "Inspection Date", width = 15, format = "yyyy-MM-dd")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "inspection Date")
     private Date inspectionDate;
 	/**deliveryDate*/
-	@Excel(name = "deliveryDate", width = 15, format = "yyyy-MM-dd")
+	@Excel(name = "Delivery Date", width = 15, format = "yyyy-MM-dd")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "deliveryDate")
     private Date deliveryDate;
 	/**amount*/
-	@Excel(name = "amount", width = 15)
+	@Excel(name = "Amount", width = 15)
     @ApiModelProperty(value = "amount")
     private String amount;
 	/**createTime*/

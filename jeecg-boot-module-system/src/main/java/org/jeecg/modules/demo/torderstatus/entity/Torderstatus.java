@@ -36,17 +36,17 @@ public class Torderstatus implements Serializable {
     @ApiModelProperty(value = "id")
     private String id;
 	/**torder*/
-	@Excel(name = "torder", width = 15)
+	@Excel(name = "Torder", width = 15)
     @ApiModelProperty(value = "torder")
     private String torder;
 	/**date*/
-	@Excel(name = "date", width = 15, format = "yyyy-MM-dd")
+	@Excel(name = "Date", width = 15, format = "yyyy-MM-dd")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "date")
     private Date date;
 	/**status*/
-	@Excel(name = "status", width = 15)
+	@Excel(name = "Status", width = 15)
     @ApiModelProperty(value = "status")
     private String status;
 	/**create_time*/

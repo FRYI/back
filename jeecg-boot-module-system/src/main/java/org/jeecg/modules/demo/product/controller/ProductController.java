@@ -9,6 +9,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.alibaba.fastjson.JSONObject;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
@@ -69,6 +71,7 @@ public class ProductController extends JeecgController<Product, IProductService>
 		QueryWrapper<Product> queryWrapper = QueryGenerator.initQueryWrapper(product, req.getParameterMap());
 		Page<Product> page = new Page<Product>(pageNo, pageSize);
 		IPage<Product> pageList = productService.page(page, queryWrapper);
+
 		return Result.ok(pageList);
 	}
 
@@ -161,7 +164,10 @@ public class ProductController extends JeecgController<Product, IProductService>
      @ApiOperation(value="product-通过name查询", notes="product-通过name查询")
      @GetMapping(value = "/queryByName")
      public Result<?> queryByName(@RequestParam(name="product",required=true) String product) {
-         Product product1 = new Product().setSku(product);
+
+		 JSONObject jsonObject = JSON.parseObject(product);
+
+		 Product product1 = new Product().setSku((String)jsonObject.get("product")).setSeason((String)jsonObject.get("season"));
 
          product1 = productService.getOne(new QueryWrapper<>(product1));
          if(product1==null) {

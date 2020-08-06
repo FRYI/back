@@ -36,11 +36,11 @@ public class Project implements Serializable {
     @ApiModelProperty(value = "id")
     private String id;
 	/**类目*/
-	@Excel(name = "类目", width = 15)
+	@Excel(name = "Project", width = 15)
     @ApiModelProperty(value = "类目")
     private String projectName;
 	/**类目产品参数*/
-	@Excel(name = "类目产品参数", width = 15)
+	@Excel(name = "Specification", width = 15)
     @ApiModelProperty(value = "类目产品参数")
     private String paramData;
 	/**created*/

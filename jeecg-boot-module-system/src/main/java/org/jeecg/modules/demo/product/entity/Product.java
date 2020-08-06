@@ -35,32 +35,36 @@ public class Product implements Serializable {
 	@TableId(type = IdType.ID_WORKER_STR)
     @ApiModelProperty(value = "id")
     private String id;
+    /**season*/
+    @Excel(name = "Season", width = 15)
+    @ApiModelProperty(value = "season")
+    private java.lang.String season;
 	/**sku*/
-	@Excel(name = "sku", width = 15)
+	@Excel(name = "Sku", width = 15)
     @ApiModelProperty(value = "sku")
     private String sku;
 	/**project*/
-	@Excel(name = "project", width = 15)
+	@Excel(name = "Project", width = 15)
     @ApiModelProperty(value = "project")
     private String project;
 	/**productName*/
-	@Excel(name = "productName", width = 15)
+	@Excel(name = "ProductName", width = 15)
     @ApiModelProperty(value = "productName")
     private String productName;
 	/**supplier*/
-	@Excel(name = "supplier", width = 15)
+	@Excel(name = "Supplier", width = 15)
     @ApiModelProperty(value = "supplier")
     private String supplier;
 	/**paramData*/
-	@Excel(name = "paramData", width = 15)
+	@Excel(name = "ParamData", width = 15)
     @ApiModelProperty(value = "paramData")
     private String paramData;
 	/**description*/
-	@Excel(name = "description", width = 15)
+	@Excel(name = "Description", width = 15)
     @ApiModelProperty(value = "description")
     private String description;
 	/**photo*/
-	@Excel(name = "photo", width = 15)
+	@Excel(name = "Photo", width = 15)
     private transient String photoString;
 
     private byte[] photo;

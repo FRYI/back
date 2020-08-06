@@ -36,43 +36,43 @@ public class Supplier implements Serializable {
     @ApiModelProperty(value = "id")
     private String id;
 	/**pin*/
-	@Excel(name = "pin", width = 15)
+	@Excel(name = "Pin", width = 15)
     @ApiModelProperty(value = "pin")
     private String pin;
 	/**supplier*/
-	@Excel(name = "supplier", width = 15)
+	@Excel(name = "Supplier", width = 15)
     @ApiModelProperty(value = "supplier")
     private String supplier;
 	/**contact*/
-	@Excel(name = "contact", width = 15)
+	@Excel(name = "Contact", width = 15)
     @ApiModelProperty(value = "contact")
     private String contact;
 	/**tel*/
-	@Excel(name = "tel", width = 15)
+	@Excel(name = "Tel", width = 15)
     @ApiModelProperty(value = "tel")
     private String tel;
 	/**email*/
-	@Excel(name = "email", width = 15)
+	@Excel(name = "Email", width = 15)
     @ApiModelProperty(value = "email")
     private String email;
 	/**website*/
-	@Excel(name = "website", width = 15)
+	@Excel(name = "Website", width = 15)
     @ApiModelProperty(value = "website")
     private String website;
 	/**city*/
-	@Excel(name = "city", width = 15)
+	@Excel(name = "City", width = 15)
     @ApiModelProperty(value = "city")
     private String city;
 	/**address*/
-	@Excel(name = "address", width = 15)
+	@Excel(name = "Address", width = 15)
     @ApiModelProperty(value = "address")
     private String address;
 	/**zipCode*/
-	@Excel(name = "zipCode", width = 15)
+	@Excel(name = "Zip Code", width = 15)
     @ApiModelProperty(value = "zipCode")
     private String zipCode;
 	/**scope*/
-	@Excel(name = "scope", width = 15)
+	@Excel(name = "Scope", width = 15)
     @ApiModelProperty(value = "scope")
     private String scope;
 	/**created*/
