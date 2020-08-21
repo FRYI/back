@@ -71,6 +71,19 @@ public class SupplierController extends JeecgController<Supplier, ISupplierServi
 		IPage<Supplier> pageList = supplierService.page(page, queryWrapper);
 		return Result.ok(pageList);
 	}
+
+
+	 /**
+	  *   查询所有
+	  * @return
+	  */
+	 @AutoLog(value = "supplier-分页列表查询")
+	 @ApiOperation(value="supplier-分页列表查询", notes="supplier-分页列表查询")
+	 @GetMapping(value = "/listAll")
+	 public Result<?> queryPageListAll() {
+		 List<Supplier> list = supplierService.list();
+		 return Result.ok(list);
+	 }
 	
 	/**
 	 *   添加

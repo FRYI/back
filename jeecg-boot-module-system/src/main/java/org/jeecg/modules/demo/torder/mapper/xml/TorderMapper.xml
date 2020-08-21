@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.demo.torder.mapper.TorderMapper">
+    <select id="getDetail" resultType="org.jeecg.modules.demo.torder.entity.Torder" parameterType="java.util.Map">
+        select torder.*  from torder
+        right join supplier on torder.Supplier =supplier.Supplier
+        right join client  on torder.Client= client.Client
+        right join product  on torder.Product = product.Sku and torder.Season = product.Season
+        ${ew.customSqlSegment}
+	</select>
+
+    <select id="selectSeason" resultType="string">
+        SELECT distinct season FROM torder;
+    </select>
 
 </mapper>

@@ -68,6 +68,7 @@ public class ProductController extends JeecgController<Product, IProductService>
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 								   HttpServletRequest req) {
+
 		QueryWrapper<Product> queryWrapper = QueryGenerator.initQueryWrapper(product, req.getParameterMap());
 		Page<Product> page = new Page<Product>(pageNo, pageSize);
 		IPage<Product> pageList = productService.page(page, queryWrapper);
@@ -164,8 +165,9 @@ public class ProductController extends JeecgController<Product, IProductService>
      @ApiOperation(value="product-通过name查询", notes="product-通过name查询")
      @GetMapping(value = "/queryByName")
      public Result<?> queryByName(@RequestParam(name="product",required=true) String product) {
-
+		 System.out.println(product);
 		 JSONObject jsonObject = JSON.parseObject(product);
+		 System.out.println(jsonObject);
 
 		 Product product1 = new Product().setSku((String)jsonObject.get("product")).setSeason((String)jsonObject.get("season"));
 

@@ -35,6 +35,9 @@ public class Inspection implements Serializable {
 	@TableId(type = IdType.ID_WORKER_STR)
     @ApiModelProperty(value = "id")
     private String id;
+    @Excel(name = "season", width = 15)
+    @ApiModelProperty(value = "season")
+    private String season;
 	/**ordernumber*/
 	@Excel(name = "OrderNumber", width = 15)
     @ApiModelProperty(value = "ordernumber")

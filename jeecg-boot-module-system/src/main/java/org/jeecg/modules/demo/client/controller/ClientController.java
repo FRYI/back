@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
+import org.jeecg.modules.demo.supplier.entity.Supplier;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -71,7 +72,17 @@ public class ClientController extends JeecgController<Client, IClientService> {
 		IPage<Client> pageList = clientService.page(page, queryWrapper);
 		return Result.ok(pageList);
 	}
-	
+	 /**
+	  *   查询所有
+	  * @return
+	  */
+	 @AutoLog(value = "supplier-分页列表查询")
+	 @ApiOperation(value="supplier-分页列表查询", notes="supplier-分页列表查询")
+	 @GetMapping(value = "/listAll")
+	 public Result<?> queryPageListAll() {
+		 List<Client> list = clientService.list();
+		 return Result.ok(list);
+	 }
 	/**
 	 *   添加
 	 *

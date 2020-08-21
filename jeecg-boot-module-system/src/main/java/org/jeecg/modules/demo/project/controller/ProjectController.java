@@ -71,7 +71,15 @@ public class ProjectController extends JeecgController<Project, IProjectService>
 		IPage<Project> pageList = projectService.page(page, queryWrapper);
 		return Result.ok(pageList);
 	}
-	
+
+	 @AutoLog(value = "project-分页列表查询")
+	 @ApiOperation(value="project-分页列表查询", notes="project-分页列表查询")
+	 @GetMapping(value = "/listAll")
+	 public Result<?> queryPageListAll() {
+
+		 List<Project> list = projectService.list();
+		 return Result.ok(list);
+	 }
 	/**
 	 *   添加
 	 *

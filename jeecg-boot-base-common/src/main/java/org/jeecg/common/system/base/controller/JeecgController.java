@@ -65,7 +65,7 @@ public class JeecgController<T, S extends IService<T>> {
         ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
         mv.addObject(NormalExcelConstants.FILE_NAME, title); //此处设置的filename无效 ,前端会重更新设置一下
         mv.addObject(NormalExcelConstants.CLASS, clazz);
-        mv.addObject(NormalExcelConstants.PARAMS, new ExportParams(title + "table", "exporter:" + sysUser.getRealname(), title));
+        mv.addObject(NormalExcelConstants.PARAMS, new ExportParams(title + " Table", "exporter:" + sysUser.getRealname(), title));
         mv.addObject(NormalExcelConstants.DATA_LIST, exportList);
         return mv;
     }
@@ -105,7 +105,7 @@ public class JeecgController<T, S extends IService<T>> {
                 List<T> list = ExcelImportUtil.importExcel(file.getInputStream(), clazz, params);
                 //update-begin-author:taoyan date:20190528 for:批量插入数据
                 long start = System.currentTimeMillis();
-                service.saveBatch(list);
+                service.saveOrUpdateBatch(list);
                 //400条 saveBatch消耗时间1592毫秒  循环插入消耗时间1947毫秒
                 //1200条  saveBatch消耗时间3687毫秒 循环插入消耗时间5212毫秒
                 log.info("消耗时间" + (System.currentTimeMillis() - start) + "毫秒");

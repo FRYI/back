@@ -241,6 +241,7 @@ public class QueryGenerator {
                             }
                         }
                     }
+					log.info("---高级查询-->" + andWrapper.toString());
                     return andWrapper;
                 });
             } catch (UnsupportedEncodingException e) {
@@ -251,7 +252,7 @@ public class QueryGenerator {
             }
             // update-end--Author:sunjianlei  Date:20200325 for：高级查询的条件要用括号括起来，防止和用户的其他条件冲突 -------
 		}
-		//log.info(" superQuery getCustomSqlSegment: "+ queryWrapper.getCustomSqlSegment());
+		log.info(" superQuery getCustomSqlSegment: "+ queryWrapper.getCustomSqlSegment());
 	}
 	/**
 	 * 根据所传的值 转化成对应的比较方式

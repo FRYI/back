@@ -1,5 +1,6 @@
 package org.jeecg.modules.demo.torder.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.demo.torder.entity.Torder;
+import org.jeecg.modules.demo.torder.mapper.TorderMapper;
 import org.jeecg.modules.demo.torder.service.ITorderService;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -49,6 +51,8 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 public class TorderController extends JeecgController<Torder, ITorderService> {
 	@Autowired
 	private ITorderService torderService;
+	@Autowired
+	private TorderMapper torderMapper;
 	
 	/**
 	 * 分页列表查询
@@ -66,12 +70,16 @@ public class TorderController extends JeecgController<Torder, ITorderService> {
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 								   HttpServletRequest req) {
+
+
 		QueryWrapper<Torder> queryWrapper = QueryGenerator.initQueryWrapper(torder, req.getParameterMap());
+
 		Page<Torder> page = new Page<Torder>(pageNo, pageSize);
-		IPage<Torder> pageList = torderService.page(page, queryWrapper);
+
+		IPage<Torder> pageList = torderMapper.getDetail(page, queryWrapper);
 		return Result.ok(pageList);
 	}
-	
+
 	/**
 	 *   添加
 	 *
@@ -85,7 +93,14 @@ public class TorderController extends JeecgController<Torder, ITorderService> {
 		torderService.save(torder);
 		return Result.ok("添加成功！");
 	}
-	
+
+
+	 @GetMapping(value = "/season")
+	 public Result<?> selectSeason() {
+		 ArrayList<String> strings = (ArrayList<String>) torderMapper.selectSeason();
+		 System.out.println(strings.toString());
+		 return Result.ok(strings);
+	 }
 	/**
 	 *  编辑
 	 *
