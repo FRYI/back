@@ -226,8 +226,8 @@ public class JeecgOrderMainController extends JeecgController<JeecgOrderMain, IJ
         for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
             MultipartFile file = entity.getValue();// 获取上传文件对象
             ImportParams params = new ImportParams();
-            params.setTitleRows(2);
-            params.setHeadRows(2);
+            params.setTitleRows(1);
+            params.setHeadRows(1);
             params.setNeedSave(true);
             try {
                 List<JeecgOrderMainPage> list = ExcelImportUtil.importExcel(file.getInputStream(), JeecgOrderMainPage.class, params);

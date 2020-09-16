@@ -15,6 +15,7 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.demo.product.entity.Product;
+import org.jeecg.modules.demo.product.mapper.ProductMapper;
 import org.jeecg.modules.demo.product.service.IProductService;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -22,6 +23,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
+import org.jeecg.modules.demo.torder.entity.Torder;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -51,7 +53,8 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 public class ProductController extends JeecgController<Product, IProductService> {
 	@Autowired
 	private IProductService productService;
-	
+	@Autowired
+	 ProductMapper productMapper;
 	/**
 	 * 分页列表查询
 	 *
@@ -168,10 +171,13 @@ public class ProductController extends JeecgController<Product, IProductService>
 		 System.out.println(product);
 		 JSONObject jsonObject = JSON.parseObject(product);
 		 System.out.println(jsonObject);
+		 Product product1 = new Product().setSku((String) jsonObject.get("product")).setSeason((String) jsonObject.get("season"));
+		 try {
+			 product1 = productService.getOne(new QueryWrapper<>(product1));
+		 }catch (Exception e){
+		 	product1 = productService.list(new QueryWrapper<>(product1)).get(0);
+		 }
 
-		 Product product1 = new Product().setSku((String)jsonObject.get("product")).setSeason((String)jsonObject.get("season"));
-
-         product1 = productService.getOne(new QueryWrapper<>(product1));
          if(product1==null) {
              return Result.error("未找到对应数据");
          }
@@ -197,7 +203,37 @@ public class ProductController extends JeecgController<Product, IProductService>
     */
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
     public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, Product.class);
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+		for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
+			MultipartFile file = entity.getValue();// 获取上传文件对象
+			ImportParams params = new ImportParams();
+			params.setTitleRows(1);
+			params.setHeadRows(1);
+			params.setNeedSave(true);
+			try {
+				List<Product> list = ExcelImportUtil.importExcel(file.getInputStream(), Product.class, params);
+				//update-begin-author:taoyan date:20190528 for:批量插入数据
+				long start = System.currentTimeMillis();
+				System.out.println(list.get(0).toString());
+				productMapper.SaveOrUpdateBatch2(list);
+				//400条 saveBatch消耗时间1592毫秒  循环插入消耗时间1947毫秒
+				//1200条  saveBatch消耗时间3687毫秒 循环插入消耗时间5212毫秒
+
+				//update-end-author:taoyan date:20190528 for:批量插入数据
+				return Result.ok("文件导入成功！数据行数：" + list.size());
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+				return Result.error("文件导入失败:" + e.getMessage());
+			} finally {
+				try {
+					file.getInputStream().close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return Result.error("文件导入失败！");
     }
 
 }

@@ -9,10 +9,12 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.oConvertUtils;
+
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.ImportParams;
+import org.jeecgframework.poi.excel.entity.enmus.ExcelType;
 import org.jeecgframework.poi.excel.view.JeecgEntityExcelView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +39,7 @@ import java.util.stream.Collectors;
 public class JeecgController<T, S extends IService<T>> {
     @Autowired
     S service;
+
 
     /**
      * 导出excel
@@ -65,7 +68,7 @@ public class JeecgController<T, S extends IService<T>> {
         ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
         mv.addObject(NormalExcelConstants.FILE_NAME, title); //此处设置的filename无效 ,前端会重更新设置一下
         mv.addObject(NormalExcelConstants.CLASS, clazz);
-        mv.addObject(NormalExcelConstants.PARAMS, new ExportParams(title + " Table", "exporter:" + sysUser.getRealname(), title));
+        mv.addObject(NormalExcelConstants.PARAMS, new ExportParams(title , title,ExcelType.XSSF));
         mv.addObject(NormalExcelConstants.DATA_LIST, exportList);
         return mv;
     }
@@ -98,13 +101,14 @@ public class JeecgController<T, S extends IService<T>> {
         for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
             MultipartFile file = entity.getValue();// 获取上传文件对象
             ImportParams params = new ImportParams();
-            params.setTitleRows(2);
+            params.setTitleRows(1);
             params.setHeadRows(1);
             params.setNeedSave(true);
             try {
                 List<T> list = ExcelImportUtil.importExcel(file.getInputStream(), clazz, params);
                 //update-begin-author:taoyan date:20190528 for:批量插入数据
                 long start = System.currentTimeMillis();
+
                 service.saveOrUpdateBatch(list);
                 //400条 saveBatch消耗时间1592毫秒  循环插入消耗时间1947毫秒
                 //1200条  saveBatch消耗时间3687毫秒 循环插入消耗时间5212毫秒

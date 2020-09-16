@@ -2,4 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.demo.client.mapper.ClientMapper">
 
+    <insert id="SaveOrUpdateBatch2" parameterType="java.util.List">
+        <selectKey resultType="String" keyProperty="id" order="BEFORE">
+            SELECT REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into client (id,Client,Contact,Tel,Email,Website,City,Address,Zip_Code,Create_Time,Update_Time)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.id}, #{item.client}, #{item.contact}, #{item.tel},#{item.email},#{item.website},#{item.city},#{item.address},#{item.zipCode},now(),#{item.updateTime})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        client=values (Client),
+        Contact=values (Contact),
+        Tel=values (Tel),
+        Email=values (Email),
+        Website=values (Website),
+        City=values (City),
+        Address=values (Address),
+        Zip_Code=values (Zip_Code),
+        Create_Time=values (Create_Time),
+        Update_Time=now()
+    </insert>
 </mapper>

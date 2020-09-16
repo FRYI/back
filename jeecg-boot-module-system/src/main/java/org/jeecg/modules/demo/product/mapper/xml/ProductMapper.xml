@@ -2,4 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.demo.product.mapper.ProductMapper">
 
+    <insert id="SaveOrUpdateBatch2" parameterType="java.util.List">
+        <selectKey resultType="String" keyProperty="id" order="BEFORE">
+            SELECT REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into product (id,Season,Sku,Project,Product_Name,Supplier,Param_Data,Description,Photo,Create_Time,Update_Time)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.id}, #{item.season}, #{item.sku},#{item.project}, #{item.productName},#{item.supplier},#{item.paramData},#{item.description},#{item.photo},now(),#{item.updateTime})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        Season = values (season),
+        Sku=values (Sku),
+        Project=values (Project),
+        Product_Name=values (Product_Name),
+        Supplier=values (Supplier),
+        Param_Data=values (Param_Data),
+        Description=values (Description),
+        Photo=values (Photo),
+        Create_Time=values (Create_Time),
+        Update_Time=now()
+    </insert>
 </mapper>

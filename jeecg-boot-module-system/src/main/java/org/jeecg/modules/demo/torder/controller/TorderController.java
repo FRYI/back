@@ -68,7 +68,7 @@ public class TorderController extends JeecgController<Torder, ITorderService> {
 	@GetMapping(value = "/list")
 	public Result<?> queryPageList(Torder torder,
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+								   @RequestParam(name="pageSize", defaultValue="30") Integer pageSize,
 								   HttpServletRequest req) {
 
 
@@ -180,7 +180,38 @@ public class TorderController extends JeecgController<Torder, ITorderService> {
     */
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
     public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, Torder.class);
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+        for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
+            MultipartFile file = entity.getValue();// 获取上传文件对象
+            ImportParams params = new ImportParams();
+            params.setTitleRows(1);
+            params.setHeadRows(1);
+            params.setNeedSave(true);
+            try {
+                List<Torder> list = ExcelImportUtil.importExcel(file.getInputStream(), Torder.class, params);
+                //update-begin-author:taoyan date:20190528 for:批量插入数据
+                long start = System.currentTimeMillis();
+				System.out.println(list.toString());
+                torderMapper.SaveOrUpdateBatch2(list);
+                //400条 saveBatch消耗时间1592毫秒  循环插入消耗时间1947毫秒
+                //1200条  saveBatch消耗时间3687毫秒 循环插入消耗时间5212毫秒
+
+                //update-end-author:taoyan date:20190528 for:批量插入数据
+                return Result.ok("文件导入成功！数据行数：" + list.size());
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+                return Result.error("文件导入失败:" + e.getMessage());
+            } finally {
+                try {
+                    file.getInputStream().close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return Result.error("文件导入失败！");
+
     }
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.demo.supplier.entity.Supplier;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.jeecg.modules.demo.torder.entity.Torder;
 
 /**
  * @Description: supplier
@@ -13,5 +14,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @Version: V1.0
  */
 public interface SupplierMapper extends BaseMapper<Supplier> {
-
+    void SaveOrUpdateBatch2(List<Supplier> list);
 }

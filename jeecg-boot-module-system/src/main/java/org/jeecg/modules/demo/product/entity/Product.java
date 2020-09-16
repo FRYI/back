@@ -74,6 +74,7 @@ public class Product implements Serializable {
             return null;
         }
         try {
+            System.out.println("pass1 "+photoString);
             return photoString.getBytes("UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -86,6 +87,7 @@ public class Product implements Serializable {
             return "";
         }
         try {
+            System.out.println("pass "+photo);
             return new String(photo,"UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

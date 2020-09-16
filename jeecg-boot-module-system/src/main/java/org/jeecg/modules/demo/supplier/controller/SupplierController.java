@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.demo.product.entity.Product;
 import org.jeecg.modules.demo.supplier.entity.Supplier;
+import org.jeecg.modules.demo.supplier.mapper.SupplierMapper;
 import org.jeecg.modules.demo.supplier.service.ISupplierService;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -49,7 +51,8 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 public class SupplierController extends JeecgController<Supplier, ISupplierService> {
 	@Autowired
 	private ISupplierService supplierService;
-	
+	@Autowired
+	 SupplierMapper supplierMapper;
 	/**
 	 * 分页列表查询
 	 *
@@ -195,7 +198,37 @@ public class SupplierController extends JeecgController<Supplier, ISupplierServi
     */
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
     public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, Supplier.class);
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+		for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
+			MultipartFile file = entity.getValue();// 获取上传文件对象
+			ImportParams params = new ImportParams();
+			params.setTitleRows(1);
+			params.setHeadRows(1);
+			params.setNeedSave(true);
+			try {
+				List<Supplier> list = ExcelImportUtil.importExcel(file.getInputStream(), Supplier.class, params);
+				//update-begin-author:taoyan date:20190528 for:批量插入数据
+				long start = System.currentTimeMillis();
+				System.out.println(list.get(0).toString());
+				supplierMapper.SaveOrUpdateBatch2(list);
+				//400条 saveBatch消耗时间1592毫秒  循环插入消耗时间1947毫秒
+				//1200条  saveBatch消耗时间3687毫秒 循环插入消耗时间5212毫秒
+
+				//update-end-author:taoyan date:20190528 for:批量插入数据
+				return Result.ok("文件导入成功！数据行数：" + list.size());
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+				return Result.error("文件导入失败:" + e.getMessage());
+			} finally {
+				try {
+					file.getInputStream().close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return Result.error("文件导入失败！");
     }
 
 }

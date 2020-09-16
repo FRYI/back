@@ -13,6 +13,7 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.demo.client.entity.Client;
+import org.jeecg.modules.demo.client.mapper.ClientMapper;
 import org.jeecg.modules.demo.client.service.IClientService;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -21,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
 import org.jeecg.modules.demo.supplier.entity.Supplier;
+import org.jeecg.modules.demo.torder.entity.Torder;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -50,7 +52,8 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 public class ClientController extends JeecgController<Client, IClientService> {
 	@Autowired
 	private IClientService clientService;
-	
+	 @Autowired
+	 private ClientMapper clientMapper;
 	/**
 	 * 分页列表查询
 	 *
@@ -195,7 +198,38 @@ public class ClientController extends JeecgController<Client, IClientService> {
     */
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
     public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, Client.class);
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+		for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
+			MultipartFile file = entity.getValue();// 获取上传文件对象
+			ImportParams params = new ImportParams();
+			params.setTitleRows(1);
+			params.setHeadRows(1);
+			params.setNeedSave(true);
+			try {
+				System.out.println("aaaaa");
+				List<Client> list = ExcelImportUtil.importExcel(file.getInputStream(), Client.class, params);
+				//update-begin-author:taoyan date:20190528 for:批量插入数据
+				long start = System.currentTimeMillis();
+				System.out.println(list.toString()+" "+list.size()+"]]"+list.get(0).toString());
+				clientMapper.SaveOrUpdateBatch2(list);
+				//400条 saveBatch消耗时间1592毫秒  循环插入消耗时间1947毫秒
+				//1200条  saveBatch消耗时间3687毫秒 循环插入消耗时间5212毫秒
+
+				//update-end-author:taoyan date:20190528 for:批量插入数据
+				return Result.ok("文件导入成功！数据行数：" + list.size());
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+				return Result.error("文件导入失败:" + e.getMessage());
+			} finally {
+				try {
+					file.getInputStream().close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return Result.error("文件导入失败！");
     }
 
 }
