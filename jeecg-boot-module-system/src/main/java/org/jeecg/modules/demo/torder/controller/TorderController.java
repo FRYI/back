@@ -1,19 +1,25 @@
 package org.jeecg.modules.demo.torder.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.DateUtils;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.demo.product.entity.Product;
+import org.jeecg.modules.demo.product.mapper.ProductMapper;
 import org.jeecg.modules.demo.torder.entity.Torder;
+import org.jeecg.modules.demo.torder.entity.TorderAndPic;
 import org.jeecg.modules.demo.torder.mapper.TorderMapper;
 import org.jeecg.modules.demo.torder.service.ITorderService;
 
@@ -26,6 +32,7 @@ import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.ImportParams;
+import org.jeecgframework.poi.excel.entity.enmus.ExcelType;
 import org.jeecgframework.poi.excel.view.JeecgEntityExcelView;
 import org.jeecg.common.system.base.controller.JeecgController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +45,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.jeecg.common.aspect.annotation.AutoLog;
 
- /**
+import static org.jeecgframework.poi.excel.entity.enmus.CellValueType.Date;
+
+/**
  * @Description: torder
  * @Author: jeecg-boot
  * @Date:   2020-07-17
@@ -49,10 +58,13 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 @RequestMapping("/torder/torder")
 @Slf4j
 public class TorderController extends JeecgController<Torder, ITorderService> {
+
 	@Autowired
 	private ITorderService torderService;
 	@Autowired
 	private TorderMapper torderMapper;
+	@Autowired
+	private ProductMapper productMapper;
 	
 	/**
 	 * 分页列表查询
@@ -90,7 +102,14 @@ public class TorderController extends JeecgController<Torder, ITorderService> {
 	@ApiOperation(value="torder-添加", notes="torder-添加")
 	@PostMapping(value = "/add")
 	public Result<?> add(@RequestBody Torder torder) {
+//		System.currentTimeMillis()
+		Date date = new Date();
+		System.out.println("jinru");
 		torderService.save(torder);
+		Date date1 = new Date();
+		System.out.println(date.toString());
+		System.out.println(date1.toString());
+
 		return Result.ok("添加成功！");
 	}
 
@@ -168,10 +187,57 @@ public class TorderController extends JeecgController<Torder, ITorderService> {
     */
     @RequestMapping(value = "/exportXls")
     public ModelAndView exportXls(HttpServletRequest request, Torder torder) {
-        return super.exportXls(request, torder, Torder.class, "torder");
+
+//        return super.exportXls(request, torder, Torder.class, "torder");
+		// Step.1 组装查询条件
+		QueryWrapper<Torder> queryWrapper = QueryGenerator.initQueryWrapper(torder, request.getParameterMap());
+		System.out.println(queryWrapper.toString());
+		LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+
+		// Step.2 获取导出数据
+		List<TorderAndPic> pageList = torderMapper.getOrderAndPic(queryWrapper);
+		System.out.println("yes");
+
+		List<TorderAndPic> exportList = null;
+
+		// 过滤选中数据
+		String selections = request.getParameter("selections");
+		if (oConvertUtils.isNotEmpty(selections)) {
+			List<String> selectionList = Arrays.asList(selections.split(","));
+			exportList = pageList.stream().filter(item -> selectionList.contains(getId(item))).collect(Collectors.toList());
+			if(exportList.size()<1){
+				System.out.println("空指针");
+				System.out.println(exportList.size());
+			}
+			if(exportList.size()>1){
+				System.out.println("bus空指针");
+				System.out.println(exportList.size());
+			}
+		} else {
+			exportList = pageList;
+		}
+
+		// Step.3 AutoPoi 导出Excel
+		ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
+		mv.addObject(NormalExcelConstants.FILE_NAME, "torder"+System.currentTimeMillis()); //此处设置的filename无效 ,前端会重更新设置一下
+		mv.addObject(NormalExcelConstants.CLASS, TorderAndPic.class);
+		mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("TotalOrder" , "TotalOrderList", ExcelType.XSSF));
+		mv.addObject(NormalExcelConstants.DATA_LIST, exportList);
+		return mv;
     }
 
-    /**
+
+	 private String getId(TorderAndPic item) {
+		 try {
+			 return PropertyUtils.getProperty(item, "id").toString();
+		 } catch (Exception e) {
+			 e.printStackTrace();
+			 return null;
+		 }
+	 }
+
+
+	 /**
       * 通过excel导入数据
     *
     * @param request
@@ -189,13 +255,23 @@ public class TorderController extends JeecgController<Torder, ITorderService> {
             params.setHeadRows(1);
             params.setNeedSave(true);
             try {
-                List<Torder> list = ExcelImportUtil.importExcel(file.getInputStream(), Torder.class, params);
+                List<TorderAndPic> list = ExcelImportUtil.importExcel(file.getInputStream(), TorderAndPic.class, params);
                 //update-begin-author:taoyan date:20190528 for:批量插入数据
                 long start = System.currentTimeMillis();
 				System.out.println(list.toString());
-                torderMapper.SaveOrUpdateBatch2(list);
-                //400条 saveBatch消耗时间1592毫秒  循环插入消耗时间1947毫秒
-                //1200条  saveBatch消耗时间3687毫秒 循环插入消耗时间5212毫秒
+				List<Product> productList = new ArrayList<>();
+				list.forEach(item->{
+					Product product = new Product();
+
+					product.setParamData(item.getParamData());
+					product.setPhotoString(item.getPhotoString());
+					product.setSeason(item.getSeason());
+					product.setSku(item.getProduct());
+					productList.add(product);
+				});
+				productMapper.SaveOrUpdateBatch2(productList);
+                torderMapper.SaveOrUpdateBatch3(list);
+
 
                 //update-end-author:taoyan date:20190528 for:批量插入数据
                 return Result.ok("文件导入成功！数据行数：" + list.size());

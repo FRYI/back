@@ -384,6 +384,7 @@ public class LoginController {
 	@ApiOperation("获取验证码")
 	@GetMapping(value = "/randomImage/{key}")
 	public Result<String> randomImage(HttpServletResponse response,@PathVariable String key){
+		System.out.println("randomImage");
 		Result<String> res = new Result<String>();
 		try {
 			String code = RandomUtil.randomString(BASE_CHECK_CODES,4);

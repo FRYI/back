@@ -153,4 +153,11 @@ public class Torder implements Serializable {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "update_time")
     private Date updateTime;
+
+    @Override
+    public String toString() {
+        return "Torder{" +
+                "id='" + id + '\'' +
+                '}';
+    }
 }

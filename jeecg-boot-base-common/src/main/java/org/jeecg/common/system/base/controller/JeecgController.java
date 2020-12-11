@@ -47,12 +47,13 @@ public class JeecgController<T, S extends IService<T>> {
      * @param request
      */
     protected ModelAndView exportXls(HttpServletRequest request, T object, Class<T> clazz, String title) {
-        // Step.1 组装查询条件
-        QueryWrapper<T> queryWrapper = QueryGenerator.initQueryWrapper(object, request.getParameterMap());
+       // Step.1 组装查询条件
+         QueryWrapper<T> queryWrapper = QueryGenerator.initQueryWrapper(object, request.getParameterMap());
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         // Step.2 获取导出数据
         List<T> pageList = service.list(queryWrapper);
+
         List<T> exportList = null;
 
         // 过滤选中数据

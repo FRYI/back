@@ -9,12 +9,66 @@
         ${ew.customSqlSegment}
 	</select>
 
+    <select id="getOrderAndPic" resultType="org.jeecg.modules.demo.torder.entity.TorderAndPic" parameterType="java.util.Map">
+        select torder.*,product.Photo,product.Param_Data from torder
+        right join supplier on torder.Supplier =supplier.Supplier
+        right join client  on torder.Client= client.Client
+        right join product  on torder.Product = product.Sku and torder.Season = product.Season
+        ${ew.customSqlSegment}
+	</select>
+
+
     <select id="selectSeason" resultType="string">
         SELECT distinct season FROM torder;
     </select>
+    <select id="getDetail1" resultType="org.jeecg.modules.demo.torder.entity.Torder" parameterType="java.util.Map">
+        select torder.*  from torder
+        right join supplier on torder.Supplier =supplier.Supplier
+        right join client  on torder.Client= client.Client
+        right join product  on torder.Product = product.Sku and torder.Season = product.Season
+        ${ew.customSqlSegment}
+	</select>
 
 
     <insert id="SaveOrUpdateBatch2" parameterType="java.util.List">
+        <selectKey resultType="String" keyProperty="id" order="BEFORE">
+            SELECT REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into torder (id,ordernumber,supplier,client,chop,season,product,incoterm,delivery,price_Usd,quantity,amount_Rmb,amount_Usd,deposit_Rmb,deposit_Usd,deposit_Pay,balance_Rmb,balance_Usd,balance_Pay,Delivery_Date,Delivery_Situation,Etd,Delay,Eta,Status,StatusDate,Create_Time,Update_Time)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.id}, #{item.ordernumber,jdbcType=VARCHAR}, #{item.supplier},#{item.client},#{item.chop},#{item.season},#{item.product,jdbcType=VARCHAR},#{item.incoterm},#{item.delivery},#{item.priceUsd,jdbcType=VARCHAR},#{item.quantity,jdbcType=VARCHAR},#{item.amountRmb,jdbcType=VARCHAR},#{item.amountUsd,jdbcType=VARCHAR},#{item.depositRmb,jdbcType=VARCHAR},#{item.depositUsd,jdbcType=VARCHAR},#{item.depositPay,jdbcType=VARCHAR},#{item.balanceRmb,jdbcType=VARCHAR},#{item.balanceUsd,jdbcType=VARCHAR},#{item.balancePay,jdbcType=VARCHAR},#{item.deliveryDate},#{item.deliverySituation,jdbcType=VARCHAR},#{item.etd} ,#{item.delay} ,#{item.eta} ,#{item.status},#{item.statusdate},now(),#{item.updateTime})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        ordernumber = values (ordernumber),
+        supplier=values (supplier),
+        client=values (client),
+        chop=values (chop),
+        incoterm=values (incoterm),
+        delivery=values (delivery),
+        price_Usd=values (price_Usd),
+        quantity=values (quantity),
+        amount_Rmb=values (amount_Rmb),
+        amount_Usd=values (amount_Usd),
+        deposit_Rmb=values (deposit_Rmb),
+        deposit_Usd=values (deposit_Usd),
+        deposit_Pay=values (deposit_Pay),
+        balance_Rmb=values (balance_Rmb),
+        balance_Usd=values(balance_Usd),
+        balance_Pay=values (balance_Pay),
+        Delivery_Date=values (Delivery_Date),
+        Delivery_Situation=values (Delivery_Situation),
+        Etd=values (Etd),
+        Delay=values (Delay),
+        Eta=values (Eta),
+        Status=values (Status),
+        StatusDate=values (StatusDate),
+        Create_Time=values (Create_Time),
+        Update_Time=now()
+    </insert>
+
+
+    <insert id="SaveOrUpdateBatch3" parameterType="java.util.List">
         <selectKey resultType="String" keyProperty="id" order="BEFORE">
             SELECT REPLACE(UUID(),'-','')
         </selectKey>

@@ -171,7 +171,9 @@ public class ProductController extends JeecgController<Product, IProductService>
 		 System.out.println(product);
 		 JSONObject jsonObject = JSON.parseObject(product);
 		 System.out.println(jsonObject);
-		 Product product1 = new Product().setSku((String) jsonObject.get("product")).setSeason((String) jsonObject.get("season"));
+		 Product product1 = new Product();
+		 product1.setSku((String) jsonObject.get("product"));
+		 product1.setSeason((String) jsonObject.get("season"));
 		 try {
 			 product1 = productService.getOne(new QueryWrapper<>(product1));
 		 }catch (Exception e){
