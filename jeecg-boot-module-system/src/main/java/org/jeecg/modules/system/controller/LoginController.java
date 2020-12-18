@@ -340,7 +340,7 @@ public class LoginController {
 		String token = JwtUtil.sign(username, syspassword);
         // 设置token缓存有效时间
 		redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + token, token);
-		redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + token, JwtUtil.EXPIRE_TIME*2 / 1000);
+		redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + token, JwtUtil.EXPIRE_TIME*10 / 1000);
 
 		// 获取用户部门信息
 		JSONObject obj = new JSONObject();
@@ -448,7 +448,7 @@ public class LoginController {
 		String token = JwtUtil.sign(username, syspassword);
 		// 设置超时时间
 		redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + token, token);
-		redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + token, JwtUtil.EXPIRE_TIME*2 / 1000);
+		redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + token, JwtUtil.EXPIRE_TIME*10 / 1000);
 		//token 信息
 		obj.put("token", token);
 		result.setResult(obj);

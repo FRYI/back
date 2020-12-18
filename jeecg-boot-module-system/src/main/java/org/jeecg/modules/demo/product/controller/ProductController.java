@@ -217,7 +217,7 @@ public class ProductController extends JeecgController<Product, IProductService>
 				List<Product> list = ExcelImportUtil.importExcel(file.getInputStream(), Product.class, params);
 				//update-begin-author:taoyan date:20190528 for:批量插入数据
 				long start = System.currentTimeMillis();
-				System.out.println(list.get(0).toString());
+
 				productMapper.SaveOrUpdateBatch2(list);
 				//400条 saveBatch消耗时间1592毫秒  循环插入消耗时间1947毫秒
 				//1200条  saveBatch消耗时间3687毫秒 循环插入消耗时间5212毫秒

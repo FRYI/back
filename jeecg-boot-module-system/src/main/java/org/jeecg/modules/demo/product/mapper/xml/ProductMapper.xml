@@ -9,7 +9,7 @@
         insert into product (id,Season,Sku,Project,Product_Name,Supplier,Param_Data,Description,Photo,Create_Time,Update_Time)
         values
         <foreach collection="list" item="item" index="index" separator="," >
-            (#{item.id}, #{item.season}, #{item.sku},#{item.project}, #{item.productName},#{item.supplier},#{item.paramData},#{item.description},#{item.photo},now(),#{item.updateTime})
+            ((SELECT REPLACE(UUID(), '-', '') AS id), #{item.season}, #{item.sku},#{item.project}, #{item.productName},#{item.supplier},#{item.paramData},#{item.description},#{item.photo},now(),#{item.updateTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
         Season = values (season),
