@@ -7102,7 +7102,7 @@ GO
 INSERT INTO [dbo].[sys_log]  VALUES (N'0643f3ad4394de9fb3c491080c6a7a03', N'1', N'用户名: admin,登录成功！', NULL, NULL, NULL, N'127.0.0.1', NULL, NULL, NULL, NULL, NULL, N'jeecg-boot', N'2019-02-19 10:18:42.0000000', NULL, NULL)
 GO
 
-INSERT INTO [dbo].[sys_log]  VALUES (N'06fbb85b34f518cd211b948552de72f8', N'1', N'登录失败，用户名:null不存在！', NULL, NULL, NULL, N'192.168.1.104', NULL, NULL, NULL, NULL, NULL, N'jeecg-boot', N'2019-03-09 20:08:38.0000000', NULL, NULL)
+INSERT INTO [dbo].[sys_log]  VALUES (N'06fbb85b34f518cd211b948552de72f8', N'1', N'Login failed，用户名:null不存在！', NULL, NULL, NULL, N'192.168.1.104', NULL, NULL, NULL, NULL, NULL, N'jeecg-boot', N'2019-03-09 20:08:38.0000000', NULL, NULL)
 GO
 
 INSERT INTO [dbo].[sys_log]  VALUES (N'07132c1228b1c165f62ea35f4ff1cbe9', N'1', N'用户名: admin,登录成功！', NULL, NULL, NULL, N'127.0.0.1', NULL, NULL, NULL, NULL, NULL, N'jeecg-boot', N'2019-02-19 18:15:44.0000000', NULL, NULL)

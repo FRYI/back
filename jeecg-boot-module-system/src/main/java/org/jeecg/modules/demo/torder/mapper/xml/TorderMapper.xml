@@ -10,7 +10,7 @@
 	</select>
 
     <select id="getOrderAndPic" resultType="org.jeecg.modules.demo.torder.entity.TorderAndPic" parameterType="java.util.Map">
-        select torder.*,product.Photo,product.Param_Data from torder
+        select torder.*,product.Photo,product.Param_Data,product.Project from torder
         right join supplier on torder.Supplier =supplier.Supplier
         right join client  on torder.Client= client.Client
         right join product  on torder.Product = product.Sku and torder.Season = product.Season

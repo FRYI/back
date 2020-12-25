@@ -77,7 +77,7 @@ public class LoginController {
 		String realKey = MD5Util.MD5Encode(lowerCaseCaptcha+sysLoginModel.getCheckKey(), "utf-8");
 		Object checkCode = redisUtil.get(realKey);
 		if(checkCode==null || !checkCode.equals(lowerCaseCaptcha)) {
-			result.error500("验证码错误");
+			result.error500("Verification code error");
 			return result;
 		}
 		//update-end-author:taoyan date:20190828 for:校验验证码
@@ -115,7 +115,7 @@ public class LoginController {
 		//用户退出逻辑
 	    String token = request.getHeader(DefContants.X_ACCESS_TOKEN);
 	    if(oConvertUtils.isEmpty(token)) {
-	    	return Result.error("退出登录失败！");
+	    	return Result.error("Log out failed！");
 	    }
 	    String username = JwtUtil.getUsername(token);
 		LoginUser sysUser = sysBaseAPI.getUserByName(username);
@@ -314,7 +314,7 @@ public class LoginController {
 		String smscode = jsonObject.getString("captcha");
 		Object code = redisUtil.get(phone);
 		if (!smscode.equals(code)) {
-			result.setMessage("手机验证码错误");
+			result.setMessage("手机Verification code error");
 			return result;
 		}
 		//用户信息
@@ -474,7 +474,7 @@ public class LoginController {
 		String realKey = MD5Util.MD5Encode(lowerCaseCaptcha+checkKey, "utf-8");
 		Object checkCode = redisUtil.get(realKey);
 		if(checkCode==null || !checkCode.equals(lowerCaseCaptcha)) {
-			return Result.error("验证码错误");
+			return Result.error("Verification code error");
 		}
 		return Result.ok();
 	}

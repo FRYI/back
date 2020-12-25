@@ -909,7 +909,7 @@ public class SysUserController {
         }
 
 		if (!smscode.equals(code)) {
-			result.setMessage("手机验证码错误");
+			result.setMessage("手机Verification code error");
 			result.setSuccess(false);
 			return result;
 		}
@@ -981,7 +981,7 @@ public class SysUserController {
 		String smscode = jsonObject.getString("smscode");
 		Object code = redisUtil.get(phone);
 		if (!smscode.equals(code)) {
-			result.setMessage("手机验证码错误");
+			result.setMessage("手机Verification code error");
 			result.setSuccess(false);
 			return result;
 		}

@@ -205,14 +205,7 @@ public class TorderController extends JeecgController<Torder, ITorderService> {
 		if (oConvertUtils.isNotEmpty(selections)) {
 			List<String> selectionList = Arrays.asList(selections.split(","));
 			exportList = pageList.stream().filter(item -> selectionList.contains(getId(item))).collect(Collectors.toList());
-			if(exportList.size()<1){
-				System.out.println("空指针");
-				System.out.println(exportList.size());
-			}
-			if(exportList.size()>1){
-				System.out.println("bus空指针");
-				System.out.println(exportList.size());
-			}
+			System.out.println(exportList.size());
 		} else {
 			exportList = pageList;
 		}
@@ -262,12 +255,16 @@ public class TorderController extends JeecgController<Torder, ITorderService> {
 				List<Product> productList = new ArrayList<>();
 				list.forEach(item->{
 					Product product = new Product();
-
+					product.setProject(item.getProject());
 					product.setParamData(item.getParamData());
 					product.setPhotoString(item.getPhotoString());
+					product.setPhoto(item.getPhoto());
+					product.setPhotoString(product.getPhotoString());
 					product.setSeason(item.getSeason());
 					product.setSku(item.getProduct());
-					productList.add(product);
+					if (product.getSku()!=null&&product.getSeason()!=null) {
+						productList.add(product);
+					}
 				});
 				productMapper.SaveOrUpdateBatch2(productList);
                 torderMapper.SaveOrUpdateBatch3(list);

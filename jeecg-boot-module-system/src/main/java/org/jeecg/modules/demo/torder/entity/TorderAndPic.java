@@ -113,6 +113,10 @@ public class TorderAndPic  implements Serializable{
     @Excel(name = "Product", width = 15)
     @ApiModelProperty(value = "product")
     private String product;
+    /**project*/
+    @Excel(name = "Project", width = 15)
+    @ApiModelProperty(value = "project")
+    private String project;
     /**incoterm*/
     @Excel(name = "Incoterm", width = 15)
     @ApiModelProperty(value = "incoterm")
@@ -238,7 +242,7 @@ public class TorderAndPic  implements Serializable{
     }
 
     public String getParamData() {
-        String p = "{'color':'"+paramData+"'}";
+        String p = "{\"color\":\"" +paramData1+"\"}";
 
         return p;
     }
@@ -293,6 +297,13 @@ public class TorderAndPic  implements Serializable{
 
     public void setProduct(String product) {
         this.product = product;
+    }
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
     }
 
     public String getIncoterm() {
