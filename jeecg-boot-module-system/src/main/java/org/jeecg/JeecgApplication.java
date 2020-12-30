@@ -6,6 +6,7 @@ import org.apache.tomcat.util.scan.StandardJarScanner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
@@ -16,6 +17,7 @@ import java.net.UnknownHostException;
 
 @Slf4j
 @EnableSwagger2
+@EnableCaching
 @SpringBootApplication
 public class JeecgApplication {
 

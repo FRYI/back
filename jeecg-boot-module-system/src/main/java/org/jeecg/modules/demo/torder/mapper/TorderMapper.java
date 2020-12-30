@@ -25,6 +25,7 @@ public interface TorderMapper extends BaseMapper<Torder> {
      void SaveOrUpdateBatch2(List<Torder> list);
      void SaveOrUpdateBatch3(List<TorderAndPic> list);
      List<TorderAndPic> getOrderAndPic(@Param(Constants.WRAPPER) Wrapper<Torder> queryWrapper);
+     List<TorderAndPic> getOrderAndPic(@Param("ids")List<String> ids);
 }
 
 

@@ -9,6 +9,18 @@
         ${ew.customSqlSegment}
 	</select>
 
+    <select id="getOrderAndPic" resultType="org.jeecg.modules.demo.torder.entity.TorderAndPic" parameterType="java.util.List">
+        select torder.*,product.Photo,product.Param_Data,product.Project from torder
+
+        right join product  on torder.Product = product.Sku and torder.Season = product.Season
+       <where>
+           <if test="ids !=null ">
+               torder.id in <foreach collection="ids" item="item" index="index"
+                                     open="(" separator="," close=")">#{item}</foreach>
+           </if>
+       </where>
+	</select>
+
     <select id="getOrderAndPic" resultType="org.jeecg.modules.demo.torder.entity.TorderAndPic" parameterType="java.util.Map">
         select torder.*,product.Photo,product.Param_Data,product.Project from torder
         right join supplier on torder.Supplier =supplier.Supplier
@@ -104,4 +116,6 @@
         Create_Time=values (Create_Time),
         Update_Time=now()
     </insert>
+
+    <cache eviction="FIFO" flushInterval="60000" size="10240" readOnly="true" />
 </mapper>

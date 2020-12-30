@@ -188,23 +188,25 @@ public class TorderController extends JeecgController<Torder, ITorderService> {
     @RequestMapping(value = "/exportXls")
     public ModelAndView exportXls(HttpServletRequest request, Torder torder) {
 
-//        return super.exportXls(request, torder, Torder.class, "torder");
-		// Step.1 组装查询条件
-		QueryWrapper<Torder> queryWrapper = QueryGenerator.initQueryWrapper(torder, request.getParameterMap());
-		System.out.println(queryWrapper.toString());
 		LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
 		// Step.2 获取导出数据
-		List<TorderAndPic> pageList = torderMapper.getOrderAndPic(queryWrapper);
+		List<TorderAndPic> pageList = new ArrayList<>();
 		System.out.println("yes");
-
 		List<TorderAndPic> exportList = null;
-
 		// 过滤选中数据
 		String selections = request.getParameter("selections");
+
 		if (oConvertUtils.isNotEmpty(selections)) {
 			List<String> selectionList = Arrays.asList(selections.split(","));
-			exportList = pageList.stream().filter(item -> selectionList.contains(getId(item))).collect(Collectors.toList());
+			if (selectionList.size()>700){
+				QueryWrapper<Torder> queryWrapper = QueryGenerator.initQueryWrapper(torder, request.getParameterMap());
+				pageList = torderMapper.getOrderAndPic(queryWrapper);
+				exportList = pageList.stream().filter(item -> selectionList.contains(item.getId())).collect(Collectors.toList());
+				System.out.println(exportList.size());
+			}else {
+				pageList = torderMapper.getOrderAndPic(selectionList);
+				exportList = pageList;
+			}
 			System.out.println(exportList.size());
 		} else {
 			exportList = pageList;
@@ -219,6 +221,44 @@ public class TorderController extends JeecgController<Torder, ITorderService> {
 		return mv;
     }
 
+    @RequestMapping(value = "/exportXls1")
+    public ModelAndView exportXls1(HttpServletRequest request, Torder torder) {
+
+//        return super.exportXls(request, torder, Torder.class, "torder");
+        // Step.1 组装查询条件
+        QueryWrapper<Torder> queryWrapper = QueryGenerator.initQueryWrapper(torder, request.getParameterMap());
+        System.out.println(queryWrapper.toString());
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+
+        // Step.2 获取导出数据
+        List<TorderAndPic> pageList = torderMapper.getOrderAndPic(queryWrapper);
+        System.out.println("yes");
+
+        List<TorderAndPic> exportList = null;
+
+        // 过滤选中数据
+        String selections = request.getParameter("selections");
+        if (oConvertUtils.isNotEmpty(selections)) {
+            List<String> selectionList = Arrays.asList(selections.split(","));
+
+
+
+
+            exportList = pageList.stream().filter(item -> selectionList.contains(item.getId())).collect(Collectors.toList());
+            System.out.println(exportList.size());
+        } else {
+            exportList = pageList;
+        }
+
+        // Step.3 AutoPoi 导出Excel
+        ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
+        mv.addObject(NormalExcelConstants.FILE_NAME, "torder"+System.currentTimeMillis()); //此处设置的filename无效 ,前端会重更新设置一下
+        mv.addObject(NormalExcelConstants.CLASS, TorderAndPic.class);
+        mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("TotalOrder" , "TotalOrderList", ExcelType.XSSF));
+        mv.addObject(NormalExcelConstants.DATA_LIST, exportList);
+        return mv;
+    }
+
 
 	 private String getId(TorderAndPic item) {
 		 try {
@@ -230,7 +270,11 @@ public class TorderController extends JeecgController<Torder, ITorderService> {
 	 }
 
 
-	 /**
+
+
+
+
+	/**
       * 通过excel导入数据
     *
     * @param request
